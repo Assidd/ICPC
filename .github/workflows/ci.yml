@@ -1,0 +1,42 @@
+name: CI Solver
+
+on:
+  push:
+    branches: [ opt/greedy-cover ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build & run locally if input exists
+        shell: bash
+        run: |
+          chmod +x run_local.sh || true
+          if [[ -f "run_local.sh" && -f "in.txt" ]]; then
+            ./run_local.sh in.txt
+          else
+            echo "[info] No in.txt or no run_local.sh — doing build only"
+            g++ -O3 -pipe -std=c++17 main.cpp -o solver
+            g++ -O2 -pipe helps/checker.cpp -o checker
+            g++ -O2 -pipe helps/scorer.cpp -o scorer
+            if [[ -f "in.txt" ]]; then
+              ./solver < in.txt > out.txt || true
+            fi
+          fi
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: solver-run
+          path: |
+            solver
+            checker
+            scorer
+            out.txt
