@@ -1,0 +1,35 @@
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Build outputs / binaries
+/solver
+/solver.exe
+/checker
+/checker.exe
+/scorer
+/scorer.exe
+*.o
+*.obj
+*.dll
+*.pdb
+*.lib
+*.a
+*.so
+*.dylib
+*.out
+*.stackdump
+
+# Temporary run files
+/out.txt
+/*.log
+
+# Build directories (if появятся)
+build/
+cmake-build-*/
+
+# Tooling
+compile_commands.json
+
+# Optional: закомментируй, если хочешь хранить настройки редактора в репо
+#.vscode/
